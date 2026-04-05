@@ -1,0 +1,15 @@
+spec_version: 1
+name: incident_report_structuring
+type: environment
+description: >
+  An environment where LLM agents extract structured data from messy
+  IT incident reports written by on-call engineers. Features 9 tasks
+  across 3 difficulty levels covering service outages, security 
+  incidents, and performance degradations. Partial credit fuzzy 
+  matching graders ensure meaningful reward signal throughout 
+  the episode.
+runtime:
+  language: python
+  version: "3.11"
+app:
+  port: 8000
