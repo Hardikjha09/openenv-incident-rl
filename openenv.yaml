@@ -1,5 +1,5 @@
 spec_version: 1
-name: incident_report_structuring
+name: incident-report-env
 type: environment
 description: >
   An environment where LLM agents extract structured data from messy

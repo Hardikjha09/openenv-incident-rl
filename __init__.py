@@ -1,6 +1,6 @@
-"""Data Extraction Environment — OpenEnv package."""
+"""Incident Report Structuring Environment — OpenEnv package."""
 
-from .models import ExtractionAction, ExtractionObservation
-from .client import DataExtractionEnv
+from .models import IncidentAction, IncidentObservation
+from .client import IncidentEnv
 
-__all__ = ["ExtractionAction", "ExtractionObservation", "DataExtractionEnv"]
+__all__ = ["IncidentAction", "IncidentObservation", "IncidentEnv"]

@@ -6,7 +6,7 @@ THE BIG PROBLEM: String matching is tricky.
   - "$1,200" vs "1200" → same number, different format
   - "john@gmail.com" vs "JOHN@GMAIL.COM" → same email
 
-OUR SOLUTION: Different grading strategies for different field types.
+Approach: Different grading strategies for different field types.
   - "exact"    → must match exactly (after normalization)
   - "numeric"  → extract numbers and compare
   - "contains" → ground truth must appear inside the answer (or vice versa)
@@ -17,7 +17,6 @@ average of all field scores.
 """
 
 import re
-import string
 
 
 def normalize(text: str) -> str:

@@ -47,7 +47,7 @@ Severity: P2 | Status: Firing""",
             "incident_id", "service_name", "error_type", "start_time",
             "reporter", "severity", "status"
         ],
-        "extraction_hints": "Extract as specified.",
+        "extraction_hints": "Extract fields as specified.",
         "ground_truth": {
             "incident_id": "INC-2026-0892",
             "service_name": "payments-db",
@@ -80,7 +80,7 @@ Auto-throttling enabled. Notify: platform-team@company.com""",
             "service_name", "alert_type", "threshold_value",
             "current_value", "triggered_at", "severity"
         ],
-        "extraction_hints": "Extract as specified.",
+        "extraction_hints": "follow the field list carefully",
         "ground_truth": {
             "service_name": "search-api",
             "alert_type": "Rate limit breach",
@@ -158,7 +158,7 @@ Status: Contained — investigation ongoing""",
             "attacker_ip", "attack_vector", "detection_time",
             "containment_action", "severity", "accounts_affected"
         ],
-        "extraction_hints": "Extract as specified.",
+        "extraction_hints": "Return values in specific format.",
         "ground_truth": {
             "ticket_id": "SEC-2026-0217",
             "incident_type": "Unauthorized access attempt",

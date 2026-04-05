@@ -51,8 +51,9 @@ class IncidentEnvironment(Environment):
         self._state = State(episode_id=str(uuid4()), step_count=0)
 
         # Pick a task
-        if task_id and get_task_by_id(task_id):
-            self._current_task = get_task_by_id(task_id)
+        task = get_task_by_id(task_id) if task_id else None
+        if task:
+            self._current_task = task
         else:
             self._current_task = random.choice(TASKS)
 
@@ -62,7 +63,7 @@ class IncidentEnvironment(Environment):
             raw_text=self._current_task["raw_text"],
             fields_to_extract=self._current_task["fields_to_extract"],
             extraction_hints=self._current_task["extraction_hints"],
-            feedback="Extract the requested fields from the raw text. Return them as a JSON dict in the 'extracted_data' field.",
+            feedback="Extract the required fields from the incident report.",
             fields_correct=0,
             fields_total=len(self._current_task["fields_to_extract"]),
             field_scores={},

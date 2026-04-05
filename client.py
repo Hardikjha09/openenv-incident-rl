@@ -14,7 +14,7 @@ except ImportError:
 @dataclass
 class StepResult:
     """Simple container for the result of a reset() or step() call."""
-    observation: Any
+    observation: IncidentObservation
     reward: float = 0.0
     done: bool = False
 

@@ -1,5 +1,4 @@
 """Quick test to verify the environment works end-to-end locally."""
-import re, json
 
 # Import directly (no server needed for this test)
 from server.incident_environment import IncidentEnvironment
@@ -8,7 +7,8 @@ from models import IncidentAction
 env = IncidentEnvironment()
 
 # Test reset — should return a task
-obs = env.reset(task_id="easy_1")
+TASK_ID = "easy_1"
+obs = env.reset(task_id=TASK_ID)
 print(f"Task: {obs.task_id} ({obs.difficulty})")
 print(f"Fields to extract: {obs.fields_to_extract}")
 print(f"Raw text preview: {obs.raw_text[:100]}...")
@@ -20,8 +20,8 @@ action = IncidentAction(extracted_data={
     "severity": "P2",
     "affected_service": "login-service",
     "start_time": "14:32 IST",
-    "on_call_engineer": "Wrong Name",  # Intentional mistake for partial credit
-    "affected_users": "50",            # Intentional mistake for partial credit
+    "on_call_engineer": "Wrong Name",  # wrong on purpose
+    "affected_users": "50",            # Intentionally incorrect
 })
 
 result = env.step(action)

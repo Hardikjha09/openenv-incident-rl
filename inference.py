@@ -36,6 +36,11 @@ API_BASE_URL = os.getenv("API_BASE_URL") or "https://router.huggingface.co/v1"
 MODEL_NAME = os.getenv("MODEL_NAME") or "Qwen/Qwen2.5-72B-Instruct"
 IMAGE_NAME = os.getenv("LOCAL_IMAGE_NAME") or os.getenv("IMAGE_NAME")
 
+if not API_KEY: 
+    raise ValueError("HF_TOKEN or API_KEY must be set")
+
+if not MODEL_NAME: 
+    raise ValueError("MODEL_NAME must be set")
 # Environment config
 ENV_URL = os.getenv("ENV_URL", "http://localhost:8000")
 BENCHMARK = os.getenv("BENCHMARK", "incident_report_structuring")
@@ -51,15 +56,20 @@ llm_client = OpenAI(base_url=API_BASE_URL, api_key=API_KEY)
 
 SYSTEM_PROMPT = textwrap.dedent("""
     You are an IT incident report analyst. You will receive a messy 
-    incident report and a list of fields to extract. Return ONLY a 
-    valid JSON object. For numeric fields return just the number. 
-    For list fields return a JSON array. If a field is not found 
-    use empty string.
+    incident report and a list of fields to extract. 
+                                
+    Return ONLY a valid JSON object. 
+
+    IMPORTANT:                           
+    - All fields must be present
+    - Numeric values must be returned as strings (e.g., "2000")
+    - Lists must be valid JSON arrays
+    - If a field is not found, return empty string ""
 """).strip()
 
 
 # ──────────────────────────────────────────────────────────
-# Structured logging — EXACT hackathon format (plain text, NOT JSON)
+# Structured logging — (Matches hackathon format)
 # ──────────────────────────────────────────────────────────
 def log_start(task: str, env: str, model: str) -> None:
     print(f"[START] task={task} env={env} model={model}", flush=True)

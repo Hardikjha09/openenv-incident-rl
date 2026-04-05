@@ -2,14 +2,16 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Copy everything from the project root
+# Install dependencies first (better caching)
+COPY server/requirements.txt ./server/requirements.txt
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r server/requirements.txt
+
+# Copy rest of the code
 COPY . .
 
-# Install dependencies
-RUN pip install --no-cache-dir -r server/requirements.txt
-
 # Set PYTHONPATH so imports work
-ENV PYTHONPATH="/app:$PYTHONPATH"
+ENV PYTHONPATH="/app"
 
 EXPOSE 8000
 

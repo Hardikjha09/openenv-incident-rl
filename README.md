@@ -4,9 +4,9 @@
 An OpenEnv environment where LLM agents extract structured data from messy IT incident reports written by on-call engineers. Features 9 tasks across 3 difficulty levels covering service outages, security incidents, and performance degradations. Partial credit fuzzy matching graders ensure meaningful reward signal throughout the episode.
 
 ## Real-world Motivation
-Every modern tech company, including Meta and large-scale providers, deals with IT incident reports daily. These reports are often chaotic, filled with jargon, changing timestamps, and conflicting data as situations evolve from initial alerts to resolution. 
+Every modern tech company, including companies like Meta and other large-scale infrastructure providers, deals with IT incident reports daily. These reports are often chaotic, filled with jargon, changing timestamps, and conflicting data as situations evolve from initial alerts to resolution. 
 
-Structuring these messy reports directly unlocks massive automation value: automated ticketing, accurate SLA tracking, intelligent on-call routing, and aggregate post-mortem analysis across computing fleets. This environment forces agentic models to demonstrate genuine context-aware extraction capabilities out of highly complex jargon and messy communication threads, exactly simulating a task that human SREs perform manually today.
+Structuring these messy reports unlocks significant automation opportunities: automated ticketing, accurate SLA tracking, intelligent on-call routing, and aggregate post-mortem analysis across computing fleets. This environment forces agentic models to demonstrate genuine context-aware extraction capabilities out of highly complex jargon and messy communication threads, exactly simulating a task that human SREs perform manually today.
 
 ## Action Space
 The agent sends an `IncidentAction` containing a single dictionary field:
@@ -53,7 +53,7 @@ The reward is the **average of all per-field scores** (0.0 to 1.0). Each field i
 - **numeric**: Extracts numbers and compares values directly - used for memory usages, durations, quantities.
 - **contains**: Checks if ground truth appears within the answer or vice versa - used for time and severities.
 - **fuzzy**: Sørensen–Dice bigram similarity coefficient - used for vague terms like engineer names and affected systems.
-- **list**: Checks membership and intersection proportion for lists of strings - used for regions endpoints and cascades.
+- **list**: Checks membership and intersection proportion for lists of strings - used for regions, endpoints, and cascades.
 
 This multi-strategy approach provides **natural partial credit** to prevent sparse rewards, keeping models iteratively aligned during training.
 
@@ -78,7 +78,7 @@ docker run -p 8000:8000 incident-report-env
 
 | Model | Score |
 |-------|-------|
-| Qwen/Qwen2.5-72B-Instruct | TBD |
+| Qwen/Qwen2.5-72B-Instruct | TBD (to be evaluated)|
 
 ## Environment Variables Required
 When running `inference.py`, the following environment variables MUST be provided:
@@ -88,3 +88,12 @@ When running `inference.py`, the following environment variables MUST be provide
 | `API_BASE_URL` | The API endpoint for the LLM |
 | `MODEL_NAME` | The model identifier |
 | `HF_TOKEN` | Your Hugging Face / API key |
+
+## Validation
+
+To validate your submission locally:
+
+```bash
+chmod +x validate-submission.sh
+./validate-submission.sh https://your-space.hf.space
+```
