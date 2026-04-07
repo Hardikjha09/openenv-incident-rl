@@ -1,12 +1,20 @@
 ---
 title: openenv-incident-rl
-emoji: 📃
+emoji: 🚨
 colorFrom: blue
 colorTo: green
 sdk: docker
 pinned: false
+tags: 
+ - openenv
+ - reinforcement-learning
+ - nlp
+ - incident-response
+ - structured-extraction
 ---
 # Incident Report Structuring Environment
+
+**Live Environment:** https://HardikJha-openenv-incident-rl.hf.space
 
 ## Environment Description
 An OpenEnv environment where LLM agents extract structured data from messy IT incident reports written by on-call engineers. Features 9 tasks across 3 difficulty levels covering service outages, security incidents, and performance degradations. Partial credit fuzzy matching graders ensure meaningful reward signal throughout the episode.
