@@ -13,16 +13,9 @@ from uuid import uuid4
 
 from openenv.core.env_server.interfaces import Environment
 from openenv.core.env_server.types import State
-
-# Try both import paths (local dev vs Docker)
-try:
-    from models import IncidentAction, IncidentObservation
-    from tasks import TASKS, get_task_by_id
-    from grader import grade_extraction
-except ImportError:
-    from data_extraction.models import IncidentAction, IncidentObservation
-    from data_extraction.tasks import TASKS, get_task_by_id
-    from data_extraction.grader import grade_extraction
+from models import IncidentAction, IncidentObservation
+from tasks import TASKS, get_task_by_id
+from grader import grade_extraction
 
 
 class IncidentEnvironment(Environment):
@@ -140,3 +133,44 @@ class IncidentEnvironment(Environment):
     @property
     def state(self) -> State:
         return self._state
+    def get_metadata(self):
+        """
+        Override default metadata to include the task list.
+        The hackathon validator reads /metadata to enumerate tasks with graders.
+        """
+        from openenv.core.env_server.types import EnvironmentMetadata
+        
+        tasks_list = [
+            {
+                "id": t["id"],
+                "difficulty": t["difficulty"],
+                "description": t["description"],
+                "has_grader": True,
+                "num_fields": len(t["fields_to_extract"]),
+            }
+            for t in TASKS
+        ]
+        
+        # Try the typed metadata first; fall back to dict if 'tasks' isn't a valid field
+        try:
+            return EnvironmentMetadata(
+                name="incident_report_structuring",
+                description="Extract structured data from messy IT incident reports. 9 tasks with graders across easy/medium/hard difficulty.",
+                version="1.0.0",
+                tasks=tasks_list,
+                num_tasks=len(TASKS),
+            )
+        except (TypeError, ValueError):
+            # EnvironmentMetadata doesn't support 'tasks' — return raw dict
+            # FastAPI will serialize it correctly
+            return {
+                "name": "incident_report_structuring",
+                "description": "Extract structured data from messy IT incident reports. 9 tasks with graders across easy/medium/hard difficulty.",
+                "version": "1.0.0",
+                "author": "Tensors team",
+                "documentation_url": None,
+                "readme_content": None,
+                "tasks": tasks_list,
+                "num_tasks": len(TASKS),
+                "tasks_with_graders": len(TASKS),
+            }
