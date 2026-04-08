@@ -11,10 +11,7 @@ if BASE_DIR not in sys.path:
 
 from server.incident_environment import IncidentEnvironment
 
-try:
-    from models import IncidentAction, IncidentObservation
-except ImportError:
-    from server.models import IncidentAction, IncidentObservation
+from models import IncidentAction, IncidentObservation
 
 app = create_app(
     IncidentEnvironment,
@@ -22,6 +19,32 @@ app = create_app(
     IncidentObservation,
     max_concurrent_envs=10,
 )
+
+from fastapi.responses import JSONResponse
+from tasks import TASKS
+
+@app.get("/metadata", include_in_schema=False)
+async def metadata_override():
+    return JSONResponse({
+        "name": "incident_report_structuring",
+        "description": "Extract structured data from messy IT incident reports. 9 tasks with graders across easy/medium/hard difficulty.",
+        "version": "1.0.0",
+        "author": "Tensors team",
+        "documentation_url": None,
+        "readme_content": None,
+        "num_tasks": len(TASKS),
+        "tasks_with_graders": len(TASKS),
+        "tasks": [
+            {
+                "id": t["id"],
+                "difficulty": t["difficulty"],
+                "description": t["description"],
+                "has_grader": True,
+                "num_fields": len(t["fields_to_extract"]),
+            }
+            for t in TASKS
+        ],
+    })
 
 @app.get("/")
 def root():

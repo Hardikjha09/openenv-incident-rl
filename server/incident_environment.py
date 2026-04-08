@@ -133,30 +133,3 @@ class IncidentEnvironment(Environment):
     @property
     def state(self) -> State:
         return self._state
-    def get_metadata(self):
-        """
-        Override default metadata to include the task list.
-        The hackathon validator reads /metadata to enumerate tasks with graders.
-        """
-        tasks_list = [
-            {
-                "id": t["id"],
-                "difficulty": t["difficulty"],
-                "description": t["description"],
-                "has_grader": True,
-                "num_fields": len(t["fields_to_extract"]),
-            }
-            for t in TASKS
-        ]
-        
-        return {
-            "name": "incident_report_structuring",
-            "description": "Extract structured data from messy IT incident reports. 9 tasks with graders across easy/medium/hard difficulty.",
-            "version": "1.0.0",
-            "author": "Tensors team",
-            "documentation_url": None,
-            "readme_content": None,
-            "tasks": tasks_list,
-            "num_tasks": len(TASKS),
-            "tasks_with_graders": len(TASKS),
-        }
