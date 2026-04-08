@@ -138,8 +138,6 @@ class IncidentEnvironment(Environment):
         Override default metadata to include the task list.
         The hackathon validator reads /metadata to enumerate tasks with graders.
         """
-        from openenv.core.env_server.types import EnvironmentMetadata
-        
         tasks_list = [
             {
                 "id": t["id"],
@@ -151,26 +149,14 @@ class IncidentEnvironment(Environment):
             for t in TASKS
         ]
         
-        # Try the typed metadata first; fall back to dict if 'tasks' isn't a valid field
-        try:
-            return EnvironmentMetadata(
-                name="incident_report_structuring",
-                description="Extract structured data from messy IT incident reports. 9 tasks with graders across easy/medium/hard difficulty.",
-                version="1.0.0",
-                tasks=tasks_list,
-                num_tasks=len(TASKS),
-            )
-        except (TypeError, ValueError):
-            # EnvironmentMetadata doesn't support 'tasks' — return raw dict
-            # FastAPI will serialize it correctly
-            return {
-                "name": "incident_report_structuring",
-                "description": "Extract structured data from messy IT incident reports. 9 tasks with graders across easy/medium/hard difficulty.",
-                "version": "1.0.0",
-                "author": "Tensors team",
-                "documentation_url": None,
-                "readme_content": None,
-                "tasks": tasks_list,
-                "num_tasks": len(TASKS),
-                "tasks_with_graders": len(TASKS),
-            }
+        return {
+            "name": "incident_report_structuring",
+            "description": "Extract structured data from messy IT incident reports. 9 tasks with graders across easy/medium/hard difficulty.",
+            "version": "1.0.0",
+            "author": "Tensors team",
+            "documentation_url": None,
+            "readme_content": None,
+            "tasks": tasks_list,
+            "num_tasks": len(TASKS),
+            "tasks_with_graders": len(TASKS),
+        }
